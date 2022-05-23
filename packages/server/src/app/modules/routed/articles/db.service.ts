@@ -122,7 +122,7 @@ export class DbService {
         and fol.followerId = ${currentUserId}
     left join map_favorites as fav
       on a.articleId = fav.articleId
-        and a.userId = ${currentUserId}
+      and fav.userId = ${currentUserId}
     where a.articleId = ${articleId}
     ;`;
     const { rows } = await this.mysql.query(sql);
@@ -132,6 +132,7 @@ export class DbService {
   async getArticleBySlug(slug: string, currentUserId: number) {
     const sql = `
     select
+      a.articleId,
       a.slug,
       a.title,
       a.description,
@@ -153,7 +154,7 @@ export class DbService {
         and fol.followerId = ${currentUserId}
     left join map_favorites as fav
       on a.articleId = fav.articleId
-        and a.userId = ${currentUserId}
+      and fav.userId = ${currentUserId}
     where a.slug = ?
     ;`;
     const { rows } = await this.mysql.query(sql, slug);
@@ -184,12 +185,13 @@ export class DbService {
       on a.userId = fol.userId
     left join map_favorites as fav
       on a.articleId = fav.articleId
-        and a.userId = ${currentUserId}
+      and fav.userId = ${currentUserId}
     where fol.followerId = ${currentUserId}
     order by a.articleId desc
     limit ${offset}, ${perPage}
     ;`;
     const { result, foundRows } = await this.mysql.queryWithFoundRows(sql);
+
     return { dbArticles: result.rows as DbArticle[], foundRows };
   }
 
@@ -218,11 +220,11 @@ export class DbService {
         and fol.followerId = ${currentUserId}
     left join map_favorites as fav
       on a.articleId = fav.articleId
-        and a.userId = ${currentUserId}
+        and fav.userId = ${currentUserId}
     `;
 
     let join = '';
-    let aWhere: string[] = [];
+    const aWhere: string[] = [];
     const dbParams: (string | number)[] = [];
 
     if (params.tag) {
@@ -248,7 +250,7 @@ export class DbService {
       join curr_users as u2
         on fav2.userId = u2.userId
       `;
-
+      console.log(params.favorited + 'LOL');
       aWhere.push(`u2.username = ?`);
       dbParams.push(params.favorited);
     }

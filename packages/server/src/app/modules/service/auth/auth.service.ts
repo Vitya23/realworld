@@ -14,11 +14,13 @@ export class AuthService {
   async getCurrentUserId(): Promise<number> {
     const guard = this.injector.get(BearerGuard) as BearerGuard; // Lazy load auth.
     await guard.canActivate();
+
     return this.req.jwtPayload?.userId || 0;
   }
 
   async hasPermissions(needPermissions?: Permission[]) {
     const userId = await this.getCurrentUserId();
+
     if (!userId) {
       return false;
     }

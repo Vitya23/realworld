@@ -67,6 +67,7 @@ export class ArticlesController {
 
   private async fead() {
     const currentUserId = await this.authService.getCurrentUserId();
+    console.log(currentUserId, 'a');
     if (currentUserId) {
       const { queryParams } = this.req;
       const offset: number = queryParams.offset || 0;
@@ -132,7 +133,9 @@ export class ArticlesController {
     article.author = author;
     article.createdAt = new Date(article.createdAt).toISOString();
     article.updatedAt = new Date(article.updatedAt).toISOString();
+
     article.favorited = dbArticle.favorited ? true : false;
+
     return article;
   }
 
@@ -150,6 +153,7 @@ export class ArticlesController {
     const currentUserId = await this.authService.getCurrentUserId();
     const oldSlug = this.req.pathParams.slug as string;
     const articlePutData = this.req.body as ArticlePutData;
+
     const newSlug = this.getSlug(articlePutData.article.title) || oldSlug;
     const okPacket = await this.db.putArticle(currentUserId, hasPermissions, oldSlug, newSlug, articlePutData.article);
     if (!okPacket.affectedRows) {

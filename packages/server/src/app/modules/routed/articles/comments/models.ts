@@ -7,6 +7,8 @@ export class Comment {
   @Column()
   id: number = 0;
   @Column()
+  articleId: number = 0;
+  @Column()
   createdAt: string = '';
   @Column()
   updatedAt: string = '';
@@ -23,7 +25,7 @@ export class CommentData {
 
 export class CommentsData {
   @Column({}, Comment)
-  comments: Comment[] = [new Comment];
+  comments: Comment[] = [new Comment()];
 }
 
 export class CommentPost {

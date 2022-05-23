@@ -18,9 +18,11 @@ export class DbService {
    */
   async signUpUser(signUpFormData: SignUpFormData): Promise<number> {
     const { email, username, password } = signUpFormData.user;
+    //https://thumbs.dreamstime.com/b/cat-avatar-illustration-cartoon-45383590.jpg
+    const image = '';
     await this.checkUserExists({ email, username });
-    const params: any[] = [email, username, this.cryptoService.getCryptedPassword(password)];
-    const sql = `insert into curr_users set email = ?, username = ?, password = ?;`;
+    const params: any[] = [email, username, this.cryptoService.getCryptedPassword(password), image];
+    const sql = `insert into curr_users set email = ?, username = ?, password = ?,image= ?;`;
     const { rows } = await this.mysql.query(sql, params);
     return (rows as OkPacket).insertId;
   }
@@ -31,7 +33,7 @@ export class DbService {
     if ((rows as any[]).length) {
       throw new CustomError({
         msg1: this.serverMsg.usernameOrEmailAlreadyExists,
-        args1: ['email-or-username'],
+        args1: ['(почта-или-имя пользователя)'],
         level: Level.trace,
       });
     }
@@ -71,6 +73,8 @@ export class DbService {
 
   async putCurrentUser(userId: number, pubUser: PutUser) {
     const { email, username, password, image, bio } = pubUser;
+
+    console.log(pubUser);
     const sql = `
     update curr_users
     set
@@ -80,7 +84,13 @@ export class DbService {
       image = ifnull(?, image),
       bio = ifnull(?, bio)
     where userId = ${userId};`;
-    const { rows } = await this.mysql.query(sql, [email, username, password, image, bio]);
+    const { rows } = await this.mysql.query(sql, [
+      email,
+      username,
+      this.cryptoService.getCryptedPassword(password),
+      image,
+      bio,
+    ]);
     return rows as OkPacket;
   }
 }

@@ -33,7 +33,7 @@ export class CommentsController {
     const slug = this.req.pathParams.slug as string;
     const okPacket = await this.db.postComment(userId, slug, commentPostData.comment.body);
     const commentId = okPacket.insertId;
-    const dbComment = await this.db.getComments(userId, commentId);
+    const dbComment = await this.db.getComments(userId,slug, commentId);
     const commentData = new CommentData();
     commentData.comment = this.transformToComment(dbComment);
     this.res.sendJson(commentData);
@@ -57,9 +57,12 @@ export class CommentsController {
   })
   async getComments() {
     const currentUserId = await this.authService.getCurrentUserId();
-    const dbComments = await this.db.getComments(currentUserId);
+    const slug = this.req.pathParams.slug as string;
+    const dbComments = await this.db.getComments(currentUserId,slug);
+
     const commentsData = new CommentsData();
     commentsData.comments = dbComments.map((dbComment) => this.transformToComment(dbComment));
+    
     this.res.sendJson(commentsData);
   }
 

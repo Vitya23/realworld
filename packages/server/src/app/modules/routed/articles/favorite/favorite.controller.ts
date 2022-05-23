@@ -30,10 +30,7 @@ export class FavoriteController {
   }
 
   @OasRoute('DELETE', '', [BearerGuard], {
-    ...new OasOperationObject()
-    .setNotFoundResponse()
-    .setNoContentResponse()
-    .getUnprocessableEnryResponse(),
+    ...new OasOperationObject().setNotFoundResponse().setNoContentResponse().getUnprocessableEnryResponse(),
   })
   async Unfavorite() {
     const slug = this.req.pathParams.slug as string;

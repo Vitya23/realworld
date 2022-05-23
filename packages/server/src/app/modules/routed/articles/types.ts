@@ -7,6 +7,7 @@ export interface ArticlesSelectParams {
 }
 
 export interface DbArticle {
+  articleId: number;
   slug: string;
   title: string;
   description: string;

@@ -15,6 +15,7 @@ export class LoginData {
 export class SignUpData extends LoginData {
   @Column({ [IS_REQUIRED]: true })
   username: string;
+  image: string;
 }
 
 export class LoginFormData {

@@ -48,7 +48,7 @@ export class UsersController {
     if (!dbUser) {
       throw new CustomError({
         msg1: this.serverMsg.badPasswordOrEmail,
-        args1: ['password-or-email'],
+        args1: ['пароль-или-емейл'],
         status: Status.UNAUTHORIZED,
       });
     }
@@ -62,11 +62,12 @@ export class UsersController {
     tags: ['user'],
     ...new OasOperationObject()
       .setResponse(UserSessionData, 'Description for response content.')
-      .getNotFoundResponse('User not found.'),
+      .getNotFoundResponse('Пользователь не найден.'),
   })
   async getCurrentUser() {
     const userId = this.req.jwtPayload.userId as number;
     const dbUser = await this.db.getCurrentUser(userId);
+
     if (!dbUser) {
       throw new CustomError({
         msg1: this.serverMsg.youHaveObsoleteToken,

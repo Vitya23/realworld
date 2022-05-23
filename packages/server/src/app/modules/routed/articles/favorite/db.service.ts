@@ -13,7 +13,7 @@ export class DbService {
     from curr_articles
     where slug = ?`;
     await this.mysql.query(sql1, slug);
-    
+    console.log(userId, slug);
     const sql2 = `update curr_articles
     set favoritesCount = favoritesCount + 1
     where slug = ?`;
@@ -28,7 +28,7 @@ export class DbService {
         and f.userId = ${userId}
     where a.slug = ?`;
     await this.mysql.query(sql1, slug);
-    
+
     const sql2 = `update curr_articles
     set favoritesCount = favoritesCount - 1
     where slug = ?`;

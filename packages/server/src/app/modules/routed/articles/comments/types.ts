@@ -1,5 +1,6 @@
 export interface DbComment {
   commentId: number;
+  articleId: number;
   createdAt: number;
   updatedAt: number;
   body: string;

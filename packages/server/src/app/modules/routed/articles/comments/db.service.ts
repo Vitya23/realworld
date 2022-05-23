@@ -36,12 +36,15 @@ export class DbService {
     return rows as OkPacket;
   }
 
-  async getComments(currentUserId: number): Promise<DbComment[]>;
-  async getComments(currentUserId: number, commentId: number): Promise<DbComment>;
-  async getComments(currentUserId: number, commentId?: number) {
+  async getComments(currentUserId: number, slug:string): Promise<DbComment[]>;
+  async getComments(currentUserId: number, slug:string ,commentId: number): Promise<DbComment>;
+  async getComments(currentUserId: number, slug:string, commentId?: number) {
+    console.log(slug);
     const select = `
     select
+    SQL_CALC_FOUND_ROWS
       c.commentId,
+      c.articleId,
       c.createdAt,
       c.updatedAt,
       c.body,
@@ -55,14 +58,15 @@ export class DbService {
     left join map_followers as f
       on c.userId = f.userId
         and f.followerId = ?
+    left join curr_articles as a
+      on a.articleId = c.articleId
+      where a.slug = '${slug}'
+    
     `;
+    
     const params = [currentUserId];
-    let where = '';
-    if (commentId) {
-      where = `where commentId = ?`;
-      params.push(commentId);
-    }
-    const sql = select + where;
+
+    const sql = select ;
     const { rows } = await this.mysql.query(sql, params);
 
     if (commentId) {

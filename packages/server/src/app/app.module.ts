@@ -1,3 +1,4 @@
+import { ArticlesController } from './modules/routed/articles/articles.controller';
 import * as http from 'http';
 import { ControllerErrorHandler, Logger, LoggerConfig, RootModule } from '@ditsmod/core';
 import { RouterModule } from '@ditsmod/router';
@@ -17,6 +18,8 @@ import { ProfilesModule } from '@routed/profiles/profiles.module';
 import { ArticlesModule } from '@routed/articles/articles.module';
 import { TagsModule } from '@routed/tags/tags.module';
 
+
+
 @RootModule({
   httpModule: http,
   serverName: 'Node.js',
@@ -25,11 +28,13 @@ import { TagsModule } from '@routed/tags/tags.module';
   prefixPerApp: 'api',
   imports: [
     UsersModule,
+
     { prefix: 'profiles', module: ProfilesModule },
     { prefix: 'articles/:slug', module: ArticlesModule },
     { prefix: 'tags', module: TagsModule },
     RouterModule,
     AuthModule,
+
     MysqlModule,
     openapiModuleWithParams,
     // AppLoggerModule, // Uncomment this to allow write logs with AppLoggerModule
@@ -46,13 +51,6 @@ import { TagsModule } from '@routed/tags/tags.module';
     // [LoggerConfig, AppLoggerModule], // Uncomment this to allow write logs with AppLoggerModule
   ],
   resolvedCollisionsPerReq: [[ControllerErrorHandler, ErrorHandlerModule]],
-  exports: [
-    AuthModule,
-    openapiModuleWithParams,
-    ValidationModule,
-    ErrorHandlerModule,
-    UtilModule,
-    BodyParserModule,
-  ],
+  exports: [AuthModule, openapiModuleWithParams, ValidationModule, ErrorHandlerModule, UtilModule, BodyParserModule],
 })
 export class AppModule {}

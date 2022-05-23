@@ -69,7 +69,8 @@ export class ServerMsg {
   /**
    * This parameter does not match the pattern
    */
-  wrongPatternParam = `This parameter does not match the pattern`;
+  wrongPatternParam = `
+  Этот параметр не соответствует шаблону`;
   /**
    * Missing request body
    */
@@ -81,11 +82,11 @@ export class ServerMsg {
   /**
    * A user with this email or username is already registered
    */
-   usernameOrEmailAlreadyExists = `A user with this email or username is already registered`;
+   usernameOrEmailAlreadyExists = `Пользователь с этим адресом электронной почты или именем пользователя уже зарегистрирован`;
   /**
    * Bad password or email
    */
-   badPasswordOrEmail = `Bad password or email`;
+   badPasswordOrEmail = `Неверный пароль или адрес электронной почты`;
   /**
    * Article with this slug exists: '%s'
    */

@@ -12,6 +12,7 @@ export class CryptoService {
    * Encrypts the password.
    */
   getCryptedPassword(str: string): string {
+    console.log(str);
     return createHmac('sha256', this.config.cryptoSecret!).update(str).digest('hex');
   }
 

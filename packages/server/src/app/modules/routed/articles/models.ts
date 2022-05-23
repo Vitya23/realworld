@@ -18,6 +18,8 @@ export class Author {
 
 export class Article {
   @Column()
+  articleId: number = 0;
+  @Column()
   slug: string = '';
   @Column({ minLength: config.minLengthArticleTitle, maxLength: config.maxLengthArticleTitle })
   title: string = '';
